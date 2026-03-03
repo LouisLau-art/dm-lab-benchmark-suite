@@ -1,0 +1,8 @@
+seed: 42
+quick_mode: true
+output_dir: artifacts
+tasks:
+  - classification
+  - clustering
+  - association
+  - anomaly
