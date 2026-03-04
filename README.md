@@ -29,6 +29,7 @@ Linux/macOS:
 ```bash
 ./scripts/dev.sh setup   # create env + install deps
 ./scripts/dev.sh run     # run benchmark (quick mode)
+./scripts/dev.sh run --full   # run benchmark with real datasets
 ./scripts/dev.sh ui      # launch streamlit dashboard
 ./scripts/dev.sh all     # run benchmark then open dashboard
 ./scripts/test.sh        # ruff + pytest
@@ -39,6 +40,7 @@ Windows PowerShell:
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 setup
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run
+powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run --full
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 ui
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 all
 powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1
@@ -48,6 +50,12 @@ Run full benchmark:
 
 ```bash
 python -m dm_lab run --config configs/default.yaml
+```
+
+Run full benchmark with real datasets (non-quick mode):
+
+```bash
+python -m dm_lab run --full --config configs/default.yaml
 ```
 
 Run a single task:

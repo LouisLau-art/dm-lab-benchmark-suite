@@ -28,13 +28,13 @@ switch ($Mode) {
     Write-Host "Environment is ready at .venv"
   }
   "run" {
-    python -m dm_lab run --config configs/default.yaml --quick @ExtraArgs
+    python -m dm_lab run --config configs/default.yaml @ExtraArgs
   }
   "ui" {
     streamlit run app/Home.py --server.headless true @ExtraArgs
   }
   "all" {
-    python -m dm_lab run --config configs/default.yaml --quick
-    streamlit run app/Home.py --server.headless true @ExtraArgs
+    python -m dm_lab run --config configs/default.yaml @ExtraArgs
+    streamlit run app/Home.py --server.headless true
   }
 }

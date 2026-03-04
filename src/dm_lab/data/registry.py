@@ -10,6 +10,9 @@ DATASET_REGISTRY = {
     "association": {
         "name": "online_retail",
         "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00352/Online%20Retail.xlsx",
+        "fallback_urls": [
+            "https://raw.githubusercontent.com/stedy/Machine-Learning-with-R-datasets/master/groceries.csv"
+        ],
     },
     "anomaly": {
         "name": "credit_card_fraud",

@@ -21,3 +21,21 @@ def download_file(url: str, destination: str | Path, timeout: int = 30) -> Path:
     response.raise_for_status()
     destination_path.write_bytes(response.content)
     return destination_path
+
+
+def download_with_fallback(
+    urls: list[str], destination: str | Path, timeout: int = 30
+) -> tuple[Path, str]:
+    destination_path = Path(destination)
+    if destination_path.exists():
+        return destination_path, "cache"
+
+    errors: list[str] = []
+    for url in urls:
+        try:
+            path = download_file(url, destination_path, timeout=timeout)
+            return path, url
+        except Exception as exc:  # pragma: no cover
+            errors.append(f"{url}: {exc}")
+
+    raise RuntimeError("All download URLs failed:\n" + "\n".join(errors))

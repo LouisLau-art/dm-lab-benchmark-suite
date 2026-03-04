@@ -30,14 +30,14 @@ case "$MODE" in
     echo "Environment is ready at .venv"
     ;;
   run)
-    python -m dm_lab run --config configs/default.yaml --quick "${EXTRA_ARGS[@]}"
+    python -m dm_lab run --config configs/default.yaml "${EXTRA_ARGS[@]}"
     ;;
   ui)
     streamlit run app/Home.py --server.headless true "${EXTRA_ARGS[@]}"
     ;;
   all)
-    python -m dm_lab run --config configs/default.yaml --quick
-    streamlit run app/Home.py --server.headless true "${EXTRA_ARGS[@]}"
+    python -m dm_lab run --config configs/default.yaml "${EXTRA_ARGS[@]}"
+    streamlit run app/Home.py --server.headless true
     ;;
   *)
     echo "Usage: ./scripts/dev.sh [setup|run|ui|all] [extra args]"

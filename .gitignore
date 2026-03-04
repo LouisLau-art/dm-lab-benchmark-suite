@@ -7,3 +7,5 @@ artifacts/
 data/*
 !data/.gitkeep
 *.pdf
+
+artifacts_full/

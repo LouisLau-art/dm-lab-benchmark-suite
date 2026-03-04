@@ -24,7 +24,17 @@ def build_parser() -> argparse.ArgumentParser:
         help="Task(s) to run. Repeat for multiple tasks.",
     )
     run.add_argument("--seed", type=int, default=None, help="Override seed")
-    run.add_argument("--quick", action="store_true", help="Force quick synthetic mode")
+    mode_group = run.add_mutually_exclusive_group()
+    mode_group.add_argument(
+        "--quick",
+        action="store_true",
+        help="Force quick synthetic mode",
+    )
+    mode_group.add_argument(
+        "--full",
+        action="store_true",
+        help="Force full mode with real datasets",
+    )
 
     return parser
 
@@ -49,7 +59,12 @@ def main(argv: list[str] | None = None) -> int:
     seed = args.seed if args.seed is not None else cfg["seed"]
     output_dir = Path(args.output_dir or cfg.get("output_dir", "artifacts"))
     tasks = _resolve_tasks(args.task, cfg.get("tasks", VALID_TASKS))
-    quick_mode = args.quick or bool(cfg.get("quick_mode", True))
+    if args.full:
+        quick_mode = False
+    elif args.quick:
+        quick_mode = True
+    else:
+        quick_mode = bool(cfg.get("quick_mode", True))
 
     results = run_all_tasks(
         output_dir=output_dir,

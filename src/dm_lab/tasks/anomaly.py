@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+from sklearn.datasets import fetch_openml
 from sklearn.ensemble import IsolationForest
 from sklearn.metrics import average_precision_score, f1_score
 from sklearn.model_selection import train_test_split
@@ -16,9 +17,35 @@ def _make_anomaly_dataset(random_state: int) -> tuple[np.ndarray, np.ndarray]:
     return x, y
 
 
+def _load_real_anomaly_dataset(
+    random_state: int, max_rows: int = 50_000
+) -> tuple[np.ndarray, np.ndarray]:
+    frame = fetch_openml(name="creditcard", version=1, as_frame=True, parser="auto")
+    x_df = frame.data.apply(lambda col: col.astype(float))
+    y_series = frame.target.astype(int)
+
+    if len(x_df) > max_rows:
+        x_df, _, y_series, _ = train_test_split(
+            x_df,
+            y_series,
+            train_size=max_rows,
+            stratify=y_series,
+            random_state=random_state,
+        )
+
+    return x_df.to_numpy(dtype=float), y_series.to_numpy(dtype=int)
+
+
 def run_anomaly(random_state: int = 42, quick: bool = True) -> dict:
-    _ = quick
-    x, y = _make_anomaly_dataset(random_state)
+    try:
+        x, y = (
+            _make_anomaly_dataset(random_state)
+            if quick
+            else _load_real_anomaly_dataset(random_state=random_state)
+        )
+    except Exception:
+        x, y = _make_anomaly_dataset(random_state)
+
     x_train, x_test, y_train, y_test = train_test_split(
         x, y, test_size=0.3, random_state=random_state, stratify=y
     )
