@@ -22,6 +22,28 @@ source .venv/bin/activate
 uv pip install -e .[dev]
 ```
 
+## One-Command Scripts
+
+Linux/macOS:
+
+```bash
+./scripts/dev.sh setup   # create env + install deps
+./scripts/dev.sh run     # run benchmark (quick mode)
+./scripts/dev.sh ui      # launch streamlit dashboard
+./scripts/dev.sh all     # run benchmark then open dashboard
+./scripts/test.sh        # ruff + pytest
+```
+
+Windows PowerShell:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 setup
+powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run
+powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 ui
+powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 all
+powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1
+```
+
 Run full benchmark:
 
 ```bash
