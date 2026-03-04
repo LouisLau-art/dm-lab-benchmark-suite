@@ -9,7 +9,7 @@ description = "Local-first reproducible data mining benchmark suite"
 readme = "README.md"
 requires-python = ">=3.12"
 license = { text = "MIT" }
-authors = [{ name = "DM-Lab Team" }]
+authors = [{ name = "Louis Shawn" }]
 dependencies = [
   "numpy>=2.1",
   "pandas>=2.2",
