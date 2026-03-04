@@ -1,7 +1,7 @@
 # DM-Lab Benchmark Suite
 
 [![CI](https://github.com/LouisLau-art/dm-lab-benchmark-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/LouisLau-art/dm-lab-benchmark-suite/actions/workflows/ci.yml)
-[![License](https://img.shields.io/github/license/LouisLau-art/dm-lab-benchmark-suite)](./LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE)
 [![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
 
 Local-first data mining benchmark project for course group work.
