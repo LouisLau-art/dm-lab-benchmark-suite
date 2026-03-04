@@ -77,6 +77,11 @@ Each run writes:
 - `artifacts/summary.json`
 - `artifacts/summary.md`
 - `artifacts/metrics.csv`
+- `artifacts/final_report.md`
+
+And refreshes:
+
+- `reports/final_report.md` (presentation-ready draft with Method Comparison/Ablation/Error Analysis)
 
 ## Reproducibility
 

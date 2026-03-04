@@ -71,6 +71,7 @@ def main(argv: list[str] | None = None) -> int:
         seed=seed,
         selected_tasks=tasks,
         quick=quick_mode,
+        canonical_report_path=Path("reports/final_report.md"),
     )
 
     print(f"Completed tasks: {', '.join(results.keys())}")

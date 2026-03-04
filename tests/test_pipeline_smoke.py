@@ -7,3 +7,4 @@ def test_run_all_tasks_returns_four_sections(tmp_path) -> None:
     assert (tmp_path / "summary.json").exists()
     assert (tmp_path / "summary.md").exists()
     assert (tmp_path / "metrics.csv").exists()
+    assert (tmp_path / "final_report.md").exists()
