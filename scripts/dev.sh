@@ -17,6 +17,7 @@ fi
 # shellcheck source=/dev/null
 source .venv/bin/activate
 uv pip install -e .[dev]
+export STREAMLIT_BROWSER_GATHER_USAGE_STATS=false
 
 MODE="${1:-all}"
 if [[ $# -gt 0 ]]; then
@@ -32,11 +33,11 @@ case "$MODE" in
     python -m dm_lab run --config configs/default.yaml --quick "${EXTRA_ARGS[@]}"
     ;;
   ui)
-    streamlit run app/Home.py "${EXTRA_ARGS[@]}"
+    streamlit run app/Home.py --server.headless true "${EXTRA_ARGS[@]}"
     ;;
   all)
     python -m dm_lab run --config configs/default.yaml --quick
-    streamlit run app/Home.py "${EXTRA_ARGS[@]}"
+    streamlit run app/Home.py --server.headless true "${EXTRA_ARGS[@]}"
     ;;
   *)
     echo "Usage: ./scripts/dev.sh [setup|run|ui|all] [extra args]"

@@ -21,6 +21,7 @@ if (-not (Test-Path ".venv")) {
 
 . .\.venv\Scripts\Activate.ps1
 uv pip install -e ".[dev]"
+$env:STREAMLIT_BROWSER_GATHER_USAGE_STATS = "false"
 
 switch ($Mode) {
   "setup" {
@@ -30,10 +31,10 @@ switch ($Mode) {
     python -m dm_lab run --config configs/default.yaml --quick @ExtraArgs
   }
   "ui" {
-    streamlit run app/Home.py @ExtraArgs
+    streamlit run app/Home.py --server.headless true @ExtraArgs
   }
   "all" {
     python -m dm_lab run --config configs/default.yaml --quick
-    streamlit run app/Home.py @ExtraArgs
+    streamlit run app/Home.py --server.headless true @ExtraArgs
   }
 }
