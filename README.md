@@ -1,5 +1,9 @@
 # DM-Lab Benchmark Suite
 
+[![CI](https://github.com/LouisLau-art/dm-lab-benchmark-suite/actions/workflows/ci.yml/badge.svg)](https://github.com/LouisLau-art/dm-lab-benchmark-suite/actions/workflows/ci.yml)
+[![License](https://img.shields.io/github/license/LouisLau-art/dm-lab-benchmark-suite)](./LICENSE)
+[![Python](https://img.shields.io/badge/python-3.12%2B-blue.svg)](https://www.python.org/)
+
 Local-first data mining benchmark project for course group work.
 
 ## Scope
@@ -49,3 +53,7 @@ Each run writes:
 - Fixed seed in `configs/default.yaml`
 - Deterministic runners in `src/dm_lab/tasks/`
 - CI runs lint + tests on each push/PR
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).
