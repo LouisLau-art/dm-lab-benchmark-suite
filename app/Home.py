@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from string import Template
 from typing import Any
 
 import altair as alt
@@ -15,18 +16,47 @@ except ImportError:  # pragma: no cover
 ARTIFACT_CANDIDATES = ["artifacts_full", "artifacts"]
 
 
-def _inject_style() -> None:
-    st.markdown(
+def _inject_style(theme_mode: str) -> None:
+    if theme_mode == "Dark":
+        palette = {
+            "bg0": "#0b1324",
+            "bg1": "#101a31",
+            "ink": "#e8eefc",
+            "muted": "#a4b3cf",
+            "card": "rgba(16, 31, 58, 0.9)",
+            "hero0": "#152847",
+            "hero1": "#0f1d36",
+            "hero_border": "rgba(148, 181, 255, 0.28)",
+            "sidebar0": "#101b32",
+            "sidebar1": "#0d1629",
+            "sidebar_border": "rgba(148, 181, 255, 0.2)",
+        }
+    else:
+        palette = {
+            "bg0": "#f4f6fb",
+            "bg1": "#eef2ff",
+            "ink": "#10243e",
+            "muted": "#5c6b82",
+            "card": "rgba(255, 255, 255, 0.88)",
+            "hero0": "#ffffff",
+            "hero1": "#f4fbff",
+            "hero_border": "rgba(16, 36, 62, 0.08)",
+            "sidebar0": "#ffffff",
+            "sidebar1": "#f3f8ff",
+            "sidebar_border": "rgba(16, 36, 62, 0.08)",
+        }
+
+    css_template = Template(
         """
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
 
           :root {
-            --bg-0: #f4f6fb;
-            --bg-1: #eef2ff;
-            --ink: #10243e;
-            --muted: #5c6b82;
-            --card: rgba(255, 255, 255, 0.88);
+            --bg-0: $bg0;
+            --bg-1: $bg1;
+            --ink: $ink;
+            --muted: $muted;
+            --card: $card;
             --accent: #0077b6;
             --accent-2: #00a6fb;
             --ok: #2a9d8f;
@@ -39,6 +69,11 @@ def _inject_style() -> None:
               radial-gradient(circle at 8% 2%, rgba(0, 166, 251, 0.14), transparent 34%),
               radial-gradient(circle at 92% 8%, rgba(0, 119, 182, 0.16), transparent 35%),
               linear-gradient(180deg, var(--bg-1), var(--bg-0));
+          }
+
+          [data-testid="stSidebar"] {
+            background: linear-gradient(180deg, $sidebar0, $sidebar1);
+            border-right: 1px solid $sidebar_border;
           }
 
           .block-container {
@@ -58,11 +93,11 @@ def _inject_style() -> None:
           }
 
           .hero {
-            background: linear-gradient(130deg, #ffffff 10%, #f4fbff 92%);
-            border: 1px solid rgba(16, 36, 62, 0.08);
+            background: linear-gradient(130deg, $hero0 10%, $hero1 92%);
+            border: 1px solid $hero_border;
             border-radius: 20px;
             padding: 1.1rem 1.35rem;
-            box-shadow: 0 10px 28px rgba(16, 36, 62, 0.09);
+            box-shadow: 0 10px 28px rgba(16, 36, 62, 0.18);
             margin-bottom: 1rem;
           }
 
@@ -101,8 +136,16 @@ def _inject_style() -> None:
             color: var(--muted);
             font-size: 0.9rem;
           }
+
+          [data-testid="stMetricValue"],
+          [data-testid="stMetricDelta"] {
+            color: var(--ink) !important;
+          }
         </style>
-        """,
+        """
+    )
+    st.markdown(
+        css_template.substitute(**palette),
         unsafe_allow_html=True,
     )
 
@@ -196,7 +239,6 @@ def render() -> None:
         layout="wide",
         initial_sidebar_state="expanded",
     )
-    _inject_style()
 
     available = _available_artifact_dirs()
     if not available:
@@ -204,6 +246,9 @@ def render() -> None:
         return
 
     with st.sidebar:
+        st.header("Display")
+        theme_mode = st.radio("Dashboard theme", options=["Light", "Dark"], index=0)
+        st.divider()
         st.header("Run Source")
         selected = st.selectbox(
             "Artifact directory",
@@ -214,6 +259,15 @@ def render() -> None:
         summary_path = Path(selected) / "summary.json"
         metrics_path = Path(selected) / "metrics.csv"
         st.caption(f"Using: `{summary_path}`")
+
+    _inject_style(theme_mode)
+
+    if theme_mode == "Dark":
+        chart_colors = ["#6ec5ff", "#48b2ff", "#56d7bc", "#ffb88a"]
+        chart_text = "#dce8ff"
+    else:
+        chart_colors = ["#0077b6", "#00a6fb", "#2a9d8f", "#ff7f51"]
+        chart_text = "#10243e"
 
     summary = load_summary(summary_path)
     metrics_df = load_metrics(metrics_path)
@@ -290,7 +344,7 @@ def render() -> None:
                     color=alt.Color(
                         "task:N",
                         scale=alt.Scale(
-                            range=["#0077b6", "#00a6fb", "#2a9d8f", "#ff7f51"]
+                            range=chart_colors
                         ),
                         legend=None,
                     ),
@@ -301,6 +355,9 @@ def render() -> None:
                         alt.Tooltip("score_pct:Q", format=".2f", title="Normalized (%)"),
                     ],
                 )
+                .configure_axis(labelColor=chart_text, titleColor=chart_text)
+                .configure_title(color=chart_text)
+                .configure_view(stroke=None)
                 .properties(height=300)
             )
             st.altair_chart(chart, use_container_width=True)

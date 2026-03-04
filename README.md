@@ -33,6 +33,7 @@ Linux/macOS:
 ./scripts/dev.sh ui      # launch streamlit dashboard
 ./scripts/dev.sh all     # run benchmark then open dashboard
 ./scripts/test.sh        # ruff + pytest
+python scripts/build_presentation.py   # build PPTX deck
 ```
 
 Windows PowerShell:
@@ -44,6 +45,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 run --full
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 ui
 powershell -ExecutionPolicy Bypass -File .\scripts\dev.ps1 all
 powershell -ExecutionPolicy Bypass -File .\scripts\test.ps1
+powershell -ExecutionPolicy Bypass -Command "python .\scripts\build_presentation.py"
 ```
 
 Run full benchmark:
@@ -70,6 +72,8 @@ Launch dashboard:
 streamlit run app/Home.py
 ```
 
+In dashboard sidebar, switch `Dashboard theme` between `Light` and `Dark`.
+
 ## Artifacts
 
 Each run writes:
@@ -82,6 +86,18 @@ Each run writes:
 And refreshes:
 
 - `reports/final_report.md` (presentation-ready draft with Method Comparison/Ablation/Error Analysis)
+
+## Presentation Deck
+
+Generate PPTX:
+
+```bash
+python scripts/build_presentation.py
+```
+
+Output:
+
+- `deliverables/DM-Lab-Group-Project.pptx`
 
 ## Reproducibility
 
